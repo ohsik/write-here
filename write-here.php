@@ -3,11 +3,11 @@
 http://wordpress.stackexchange.com/questions/15283/i-am-trying-to-create-a-simple-frontend-form-for-posting
 
 Plugin Name: Write Here
-Plugin URI: http://www.URL.com
-Description: Simple front end form
+Plugin URI: http://www.ohsikpark.com
+Description: Simple WordPrss front end form
 Author: O
 Version: 1.0
-Author URI: http://www.URL.com
+Author URI: http://www.ohsikpark.com
 License: GPL2
 */
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
