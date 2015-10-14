@@ -1,0 +1,25 @@
+*{
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+.write-here label{
+    font-size: 80%;
+}
+.write-here input, 
+.write-here textarea, 
+.write-here select{
+    font-size: 16px;
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+.write-here input[type="submit"]{
+    cursor: pointer;
+    background: #1DB3E0;
+    color: #fff;
+    border: none;
+    margin: 10px 0;
+}
