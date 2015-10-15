@@ -70,7 +70,7 @@ function write_here_form(){
     $postdate = date('Y-m-d H:i:s');
 ?>
 <div class="write-here">
-    <?php write_here_show_error_messages(); ?>
+    <?php //write_here_show_error_messages(); ?>
     <form id="new_post" name="new_post" method="post" action="">
         <label for="title">Title</label>
         <input type="text" id="title" name="title" />
@@ -117,13 +117,13 @@ function write_here_add_new_post() {
         }
         if ($content == '') {
             write_here_errors()->add('content_not_vaild', __('Content not valid'));
-            return false;
+            //return false;
         }
         if (!$postdate) {
             $postdate = date('Y-m-d H:i:s');
             $gmtpostdate = gmdate('Y-m-d H:i:s');
         }
-       
+           
         // Add the content of the form to $post as an array
         $new_post = array(
             'post_title'    => $title,
@@ -135,13 +135,26 @@ function write_here_add_new_post() {
             'post_date_gmt' => $gmtpostdate     // The time post was made, in GMT.
         );
 
-        //save the new post and return its ID
-        $post_id = wp_insert_post($new_post);
-
-        // This will redirect you to the newly created post (Using GUID)
-        $post = get_post($post_id);
-        wp_redirect($post->guid);
-        exit();
+        $errors = write_here_errors()->get_error_messages();
+        
+        // Test validation messages
+        echo '<pre>';
+        var_dump($errors);
+        echo '</pre>';
+        
+        // only create post if there are no errors
+		if(empty($errors)) {
+            //save the new post and return its ID
+            $post_id = wp_insert_post($new_post);
+            
+            if($post_id) {
+                // This will redirect you to the newly created post (Using GUID)
+                $post = get_post($post_id);
+                wp_redirect($post->guid);
+                exit();
+            }
+        }
+        
     }
 }
 add_action('init', 'write_here_add_new_post');
