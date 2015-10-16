@@ -70,7 +70,7 @@ function write_here_form(){
     $postdate = date('Y-m-d H:i:s');
 ?>
 <div class="write-here">
-    <?php //write_here_show_error_messages(); ?>
+    <?php write_here_show_error_messages(); ?>
     <form id="new_post" name="new_post" method="post" action="">
         <label for="title">Title</label>
         <input type="text" id="title" name="title" />
@@ -117,7 +117,6 @@ function write_here_add_new_post() {
         }
         if ($content == '') {
             write_here_errors()->add('content_not_vaild', __('Content not valid'));
-            //return false;
         }
         if (!$postdate) {
             $postdate = date('Y-m-d H:i:s');
@@ -138,9 +137,9 @@ function write_here_add_new_post() {
         $errors = write_here_errors()->get_error_messages();
         
         // Test validation messages
-        echo '<pre>';
-        var_dump($errors);
-        echo '</pre>';
+        //echo '<pre>';
+        //var_dump($errors);
+        //echo '</pre>';
         
         // only create post if there are no errors
 		if(empty($errors)) {
