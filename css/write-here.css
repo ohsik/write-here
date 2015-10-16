@@ -18,8 +18,65 @@
 }
 .write-here input[type="submit"]{
     cursor: pointer;
-    background: #1DB3E0;
+    background: #4CA2CC;
     color: #fff;
     border: none;
     margin: 10px 0;
+}
+#timestampdiv input,
+#timestampdiv select{
+    width: auto;
+    display: inline-block;
+    padding: 2px;
+}
+.form-error{
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 80%;
+    color: #E65151;
+    border: 1px solid #E65151;
+}
+.write-here-dashboard li{
+    margin-bottom: 20px;
+}
+.write-here-dashboard p{
+    display: inline-block;
+    width: 100%;
+    margin: 0;
+}
+.wh-post-meta{
+    font-size: 80%;
+}
+/* WP editor - WYSIWYG editor with media button */
+.wp-editor-wrap{
+    margin-bottom: 10px;
+}
+
+.wp-editor-container{
+    border: 1px solid #ddd !important;
+}
+.wp-editor-container textarea{
+    border: none;
+    height: 300px;
+}
+.quicktags-toolbar input{
+    width: auto;
+}
+/* Pagination on dashboard */
+.wh-pagenavi ul{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.wh-pagenavi ul li{
+    display: inline-block;
+}
+.wh-pagenavi ul li a,
+.wh-pagenavi ul li .current{
+    padding: 5px 10px;
+    background: #ddd;
+}
+.wh-pagenavi ul li .current{
+    border: 1px solid #ddd;
+    background: #fff;
 }
