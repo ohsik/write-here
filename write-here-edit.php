@@ -30,7 +30,10 @@ function write_here_edit_form(){
     ?>
     <div class="write-here edit">
         <?php write_here_show_error_messages(); ?>
-        <form id="edit_post" name="edit_post" method="post" action="">
+        <form id="edit_post" name="edit_post" method="post" action="" enctype="multipart/form-data">
+            <label for="fimage">Featured Image</label>
+            <input type="file" name="fimage" id="fimage" />
+            
             <label for="title">Title</label>
             <input type="text" id="title" name="title" value="<?php echo $post_to_edit->post_title; ?>" />
 
@@ -125,4 +128,3 @@ function write_here_edit_post() {
     }
 }
 add_action('init', 'write_here_edit_post');
-?>

@@ -1,11 +1,12 @@
 <?php
 /*
 Plugin Name: Write Here
-Plugin URI: http://www.URL.com
-Description: Simple front end form
-Author: O
+Plugin URI: http://wp.ohsikpark.com/write-here/
+Description: Simple front end form for WordPress. Write Here will allow you to have registered users to write & manage articles from front end.
+Author: Ohsik Park
 Version: 1.0
-Author URI: http://www.URL.com
+Author URI: http://www.ohsikpark.com
+Text Domain: write-here
 License: GPL2
 */
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
@@ -17,6 +18,7 @@ define('WH_PATH', plugins_url() . '/write-here');
 require_once( dirname( __FILE__ ) . '/write-here-write.php' );
 require_once( dirname( __FILE__ ) . '/write-here-dashboard.php' );
 require_once( dirname( __FILE__ ) . '/write-here-edit.php' );
+require_once( dirname( __FILE__ ) . '/admin/write-here-admin.php' );
 
 /*
 **  Register CSS & JS assets for plug in
@@ -44,6 +46,25 @@ add_action('wp_footer', 'write_here_print_assets');
 // Load Date & Time fields function
 if( !function_exists( 'write_here_time' ) || !function_exists( 'write_here_time_edit' ) ){
     require_once( dirname( __FILE__ ) . '/write-here-time.php' );
+}
+
+// used for tracking error messages
+function write_here_errors(){
+    static $wp_error; // Will hold global variable safely
+    return isset($wp_error) ? $wp_error : ($wp_error = new WP_Error(null, null, null));
+}
+
+// displays error messages from form submissions
+function write_here_show_error_messages() {
+	if($codes = write_here_errors()->get_error_codes()) {
+        echo '<div class="form-error">';
+        // Loop error codes and display errors
+        foreach($codes as $code){
+            $message = write_here_errors()->get_error_message($code);
+            echo '<span class="error"><strong>' . __('Error') . '</strong>: ' . $message . '</span><br/>';
+        }
+        echo '</div>';
+	}	
 }
 
 /*
@@ -105,4 +126,29 @@ function edit_write_here(){
     }
 }
 add_shortcode('write-here-edit', 'edit_write_here');
-?>
+
+/*
+**  Process data from front end form
+    http://voodoopress.com/including-images-as-attachments-or-featured-image-in-post-from-front-end-form/
+*/
+function insert_attachment($file_handler,$post_id,$setthumb='false') {
+    // check to make sure its a successful upload
+    if ($_FILES[$file_handler]['error'] !== UPLOAD_ERR_OK) __return_false();
+
+    require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+    require_once(ABSPATH . "wp-admin" . '/includes/file.php');
+    require_once(ABSPATH . "wp-admin" . '/includes/media.php');
+
+    $attach_id = media_handle_upload( $file_handler, $post_id );
+
+    if ($setthumb) update_post_meta($post_id,'_thumbnail_id',$attach_id);
+    return $attach_id;
+}
+
+// Add plug in link to setting page
+function write_here_action_links( $links ) {
+   $links[] = '<a href="'. esc_url( get_admin_url(null, 'options-general.php?page=write-here-setting') ) .'">Settings</a>';
+   $links[] = '<a href="http://wp.ohsikpark.com/write-here/" target="_blank">Documentation</a>';
+   return $links;
+}
+add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'write_here_action_links' );

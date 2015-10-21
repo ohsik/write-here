@@ -8,8 +8,12 @@
 // Edit post function
 function wh_edit_post_link($link = 'Edit this', $before = '', $after = '') {
     global $post;
-    $editpage = 'edit-post'; // Edit page URL. This should be set up by site owner. Add this to plug in setting.
-    $editLink = wp_nonce_url( get_bloginfo('url') . "/".$editpage."/?action=edit&post=" . $post->ID); 
+    
+    // Get plug in options for Edit page URL
+    $wh_option_values = get_option( 'wirte_here_options' );
+    $edit_page_id = $wh_option_values['pid_num'];
+    
+    $editLink = wp_nonce_url( get_bloginfo('url') . "/?p=".$edit_page_id."/?action=edit&post=" . $post->ID); 
     $htmllink = "<a href='" . $editLink . "'>".$link."</a>";
     echo $before . $htmllink . $after;
 }
@@ -21,6 +25,18 @@ function wh_delete_post_link($link = 'Delete this', $before = '', $after = '') {
     $delLink = wp_nonce_url( get_bloginfo('url') . "/wp-admin/post.php?action=delete&post=" . $post->ID, 'delete-post_' . $post->ID);
     $htmllink = "<a href='" . $delLink . "' onclick = \"if ( confirm('".$message."' ) ) { return true; } return false;\"/>".$link."</a>";
     echo $before . $htmllink . $after;
+}
+
+function wh_post_status($postsdb){
+    if ($postsdb == "future"):
+        $wp_ps = "Scheduled";
+    elseif ($postsdb == "private"):
+        $wp_ps = "Private";
+    else:
+        $wp_ps = "Published";
+    endif;
+    
+    echo $wp_ps;
 }
 
 function write_here_dashboard(){
@@ -38,6 +54,7 @@ function write_here_dashboard(){
     $author_query = array(
         'posts_per_page' => $post_pp,
         'offset'=>  $offset,
+        'post_status' => array('publish', 'future', 'private'),
         'author' => $current_user->ID
      );
     $author_posts = new WP_Query($author_query);
@@ -46,10 +63,11 @@ function write_here_dashboard(){
     if($author_posts->have_posts()){
         echo '<div class="write-here-dashboard"><ul>';
         while($author_posts->have_posts()) : $author_posts->the_post();
+            $postsdb = get_post_status();
         ?>
             <li>
                 <p><a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></p>
-                <p class="wh-post-meta"><i><?php echo get_the_date(); ?></i> <span class="wh-edit"> <?php wh_edit_post_link('Edit', '', ''); ?> / <?php wh_delete_post_link('Delete', '', ''); ?></span></p>
+                <p class="wh-post-meta"><?php wh_post_status($postsdb); ?> on <i><?php echo get_the_date(); ?></i> <span class="wh-edit"> <?php wh_edit_post_link('Edit', '', ''); ?> / <?php wh_delete_post_link('Delete', '', ''); ?></span></p>
             </li>
         <?php           
         endwhile;
@@ -82,4 +100,3 @@ function write_here_dashboard(){
         echo '<p>Write your first post!</p>';
     }
 }
-?>

@@ -6,11 +6,9 @@ http://wordpress.stackexchange.com/questions/15283/i-am-trying-to-create-a-simpl
 
 ###Todos..
 
-1. Add featured image field
-2. Admin page in Back end (https://codex.wordpress.org/Administration_Menus)
-3. Add setting to set post edit page (write-here-dashboard.php line 11)
-4. Debug Notice (Undefined index: _wpnonce in write-here-edit.php on line 9)
-5. Add Update success message after editing the post (Add it on the top of the form in write-here-edit.php)
+1. Add featured image field (http://voodoopress.com/including-images-as-attachments-or-featured-image-in-post-from-front-end-form/)
+2. Debug Notice (Undefined index: _wpnonce in write-here-edit.php on line 9)
+3. Add Update success message after editing the post (Add it on the top of the form in write-here-edit.php)
 
 Please feel free to talk me for any comments or suggestions for this plug in
 o@ohsikpark.com

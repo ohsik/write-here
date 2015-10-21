@@ -153,4 +153,3 @@ function write_here_time_edit( $edit = 1, $for_post = 1, $tab_index = 0, $multi 
         echo '<input type="hidden" id="' . $cur_timeunit . '" name="' . $cur_timeunit . '" value="' . $curr . '" />' . "\n";
     }
 }
-?>

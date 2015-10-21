@@ -10,7 +10,10 @@ function write_here_form(){
 ?>
 <div class="write-here write">
     <?php write_here_show_error_messages(); ?>
-    <form id="new_post" name="new_post" method="post" action="">
+    <form id="new_post" name="new_post" method="post" action="" enctype="multipart/form-data">
+        <label for="fimage">Featured Image</label>
+        <input type="file" name="fimage" id="fimage" />
+        
         <label for="title">Title</label>
         <input type="text" id="title" name="title" />
 
@@ -38,7 +41,6 @@ function write_here_form(){
 <?php  
     return ob_get_clean();
 }
-
 
 /*
 **  Process data from front end form
@@ -89,8 +91,17 @@ function write_here_add_new_post() {
         
         // only create post if there are no errors
 		if(empty($errors)) {
-            //save the new post and return its ID
+            // save the new post and return its ID
             $post_id = wp_insert_post($new_post);
+            
+            // image upload
+            if($_FILES) {
+                foreach ($_FILES as $file => $array) {
+                $newupload = insert_attachment($file,$post_id);
+                // $newupload returns the attachment id of the file that
+                // was just uploaded. Do whatever you want with that now.
+                }
+            }
             
             if($post_id) {
                 // This will redirect you to the newly created post (Using GUID)
@@ -103,23 +114,3 @@ function write_here_add_new_post() {
     }
 }
 add_action('init', 'write_here_add_new_post');
-
-// used for tracking error messages
-function write_here_errors(){
-    static $wp_error; // Will hold global variable safely
-    return isset($wp_error) ? $wp_error : ($wp_error = new WP_Error(null, null, null));
-}
-
-// displays error messages from form submissions
-function write_here_show_error_messages() {
-	if($codes = write_here_errors()->get_error_codes()) {
-        echo '<div class="form-error">';
-        // Loop error codes and display errors
-        foreach($codes as $code){
-            $message = write_here_errors()->get_error_message($code);
-            echo '<span class="error"><strong>' . __('Error') . '</strong>: ' . $message . '</span><br/>';
-        }
-        echo '</div>';
-	}	
-}
-?>

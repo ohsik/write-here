@@ -23,8 +23,11 @@
     border: none;
     margin: 10px 0;
 }
-#timestampdiv input,
-#timestampdiv select{
+.timestamp-wrap label span{
+    display: none;
+}
+.timestamp-wrap input,
+.timestamp-wrap select{
     width: auto;
     display: inline-block;
     padding: 2px;
