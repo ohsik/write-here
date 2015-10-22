@@ -31,9 +31,18 @@ function write_here_edit_form(){
     <div class="write-here edit">
         <?php write_here_show_error_messages(); ?>
         <form id="edit_post" name="edit_post" method="post" action="" enctype="multipart/form-data">
-            <label for="fimage">Featured Image</label>
-            <input type="file" name="fimage" id="fimage" />
             
+            <label for="wh_image_upload">Featured Image</label>
+            <?php 
+                if(get_the_post_thumbnail($post_id)){
+                    echo '<div class="wh-f-img">';
+                    echo get_the_post_thumbnail($post_id, 'thumbnail');
+                    echo '<p id="rm_fi">Remove</p>';
+                    echo '</div>';
+                }else{
+            ?>
+            <input type="file" name="wh_image_upload" id="wh_image_upload" multiple="false" />
+            <?php } ?>
             <label for="title">Title</label>
             <input type="text" id="title" name="title" value="<?php echo $post_to_edit->post_title; ?>" />
 
@@ -87,7 +96,7 @@ function write_here_edit_post() {
         $wh_hour    = $_POST['hh'];
         $wh_min     = $_POST['mn'];
         $wh_sec     = $_POST['ss'];
-        $title      =  wp_strip_all_tags($_POST['title']);
+        $title      = wp_strip_all_tags($_POST['title']);
         $content    = $_POST['wh_content'];
         $tags       = $_POST['post_tags'];
         $cat        = $_POST['cat'];

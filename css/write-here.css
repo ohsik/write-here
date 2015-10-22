@@ -59,7 +59,6 @@
 .wp-editor-wrap{
     margin-bottom: 10px;
 }
-
 .wp-editor-container{
     border: 1px solid #ddd !important;
 }
@@ -87,4 +86,7 @@
 .wh-pagenavi ul li .current{
     border: 1px solid #ddd;
     background: #fff;
+}
+.wh-f-img{
+    display: block;
 }

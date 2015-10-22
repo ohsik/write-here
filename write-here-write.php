@@ -11,8 +11,9 @@ function write_here_form(){
 <div class="write-here write">
     <?php write_here_show_error_messages(); ?>
     <form id="new_post" name="new_post" method="post" action="" enctype="multipart/form-data">
-        <label for="fimage">Featured Image</label>
-        <input type="file" name="fimage" id="fimage" />
+        
+        <label for="wh_image_upload">Featured Image</label>
+        <input type="file" name="wh_image_upload" id="wh_image_upload" multiple="false" />
         
         <label for="title">Title</label>
         <input type="text" id="title" name="title" />
@@ -57,7 +58,7 @@ function write_here_add_new_post() {
         $wh_hour    = $_POST['hh'];
         $wh_min     = $_POST['mn'];
         $wh_sec     = $_POST['ss'];
-        $title      =  wp_strip_all_tags($_POST['title']);
+        $title      = wp_strip_all_tags($_POST['title']);
         $content    = $_POST['wh_content'];
         $tags       = $_POST['post_tags'];
         $cat        = $_POST['cat'];
@@ -94,14 +95,19 @@ function write_here_add_new_post() {
             // save the new post and return its ID
             $post_id = wp_insert_post($new_post);
             
-            // image upload
-            if($_FILES) {
-                foreach ($_FILES as $file => $array) {
-                $newupload = insert_attachment($file,$post_id);
-                // $newupload returns the attachment id of the file that
-                // was just uploaded. Do whatever you want with that now.
-                }
+            /*
+            // These files need to be included as dependencies when on the front end.
+            require_once( ABSPATH . 'wp-admin/includes/image.php' );
+            require_once( ABSPATH . 'wp-admin/includes/file.php' );
+            require_once( ABSPATH . 'wp-admin/includes/media.php' );
+
+            // Let WordPress handle the upload.
+            $attachment_id = media_handle_upload( 'wh_image_upload', $post_id );
+            if ( !is_wp_error( $attachment_id ) ) {
+                // If the image was uploaded successfully, set it as featured image
+                set_post_thumbnail( $post_id, $attachment_id );
             }
+            */
             
             if($post_id) {
                 // This will redirect you to the newly created post (Using GUID)
