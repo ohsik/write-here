@@ -39,12 +39,15 @@ function write_here_edit_form(){
                     $attachment_id = get_post_thumbnail_id( $post_id );
                     ?>
                     <div class="wh-f-img">
-                    <?php
-                    echo get_the_post_thumbnail($post_id, 'thumbnail', array('class' => 'file-'.$attachment_id.''));
-                    ?>
-                    <p id="rm_fi"><a class="remImage" name="<?php echo $attachment_id; ?>" href=""><?php _e('Delete');?></a></p>
-                    <input type="hidden" id="att_remove" name="att_remove[]" value="<?php echo $attachment_id; ?>" />
-                    <input type="hidden" name="nonce" id="nonce" value="<?php echo wp_create_nonce( 'delete_attachment' ); ?>" />
+                        <?php
+                        echo get_the_post_thumbnail($post_id, 'thumbnail', array('class' => 'file-'.$attachment_id.''));
+                        ?>
+                        <p id="rm_fi"><a class="remImage" name="<?php echo $attachment_id; ?>" href=""><?php _e('Delete');?></a></p>
+                        <input type="hidden" id="att_remove" name="att_remove[]" value="<?php echo $attachment_id; ?>" />
+                        <input type="hidden" name="nonce" id="nonce" value="<?php echo wp_create_nonce( 'delete_attachment' ); ?>" />
+                        <script type="text/javascript">
+                            var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+                        </script>
                     </div>
                     <input type="file" name="wh_image_upload" id="wh_image_upload" multiple="false" style="display: none;" />
             <?php }else{ ?>

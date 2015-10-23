@@ -11,7 +11,6 @@ function write_here_form(){
 <div class="write-here write">
     <?php write_here_show_error_messages(); ?>
     <form id="new_post" name="new_post" method="post" action="" enctype="multipart/form-data">
-        
         <label for="wh_image_upload">Featured Image</label>
         <input type="file" name="wh_image_upload" id="wh_image_upload" multiple="false" />
         
@@ -95,6 +94,7 @@ function write_here_add_new_post() {
             // save the new post and return its ID
             $post_id = wp_insert_post($new_post);
             
+            /*
             // These files need to be included as dependencies when on the front end.
             require_once( ABSPATH . 'wp-admin/includes/image.php' );
             require_once( ABSPATH . 'wp-admin/includes/file.php' );
@@ -106,6 +106,7 @@ function write_here_add_new_post() {
                 // If the image was uploaded successfully, set it as featured image
                 set_post_thumbnail( $post_id, $attachment_id );
             }
+            */
             
             if($post_id) {
                 // This will redirect you to the newly created post (Using GUID)

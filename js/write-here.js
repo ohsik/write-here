@@ -4,7 +4,7 @@ jQuery(document).ready( function($) {
         var attID = jQuery(this).attr('name');
         jQuery.ajax({
             type: 'post',
-            url: 'http://localhost:8888/WordPress/wp-admin/admin-ajax.php',
+            url: ajaxurl,
             data: {
                 action: 'delete_attachment',
                 att_ID: jQuery(this).attr('name'),
@@ -16,7 +16,7 @@ jQuery(document).ready( function($) {
                 $('#file-'+attID).fadeOut(); 
                 $('#wh_image_upload').fadeIn(); 
             }
-    });
+        });
     });
         
 });
