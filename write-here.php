@@ -67,6 +67,17 @@ function write_here_show_error_messages() {
 	}	
 }
 
+// Delete featured image on edit page
+add_action( 'wp_ajax_delete_attachment', 'delete_attachment' );
+function delete_attachment( $post ) {
+    //echo $_POST['att_ID'];
+    $msg = 'Attachment ID [' . $_POST['att_ID'] . '] has been deleted!';
+    if( wp_delete_attachment( $_POST['att_ID'], true )) {
+        echo $msg;
+    }
+    die();
+}
+
 /*
 **  Add a shortcode for front end form
     [write-here]
@@ -82,7 +93,7 @@ function form_write_here(){
         $output = write_here_form();
         return $output;
     }else{
-        echo 'Please Sign in to continue...';
+        echo 'Please <a href="'.wp_login_url().'" title="Login">Login</a> to continue...';
     }
 }
 add_shortcode('write-here', 'form_write_here');
@@ -102,7 +113,7 @@ function dashboard_write_here(){
         $output = write_here_dashboard();
         return $output;
     }else{
-        echo 'Please Sign in to continue...';
+        echo 'Please <a href="'.wp_login_url().'" title="Login">Login</a> to continue...';
     }
 }
 add_shortcode('write-here-dashboard', 'dashboard_write_here');
@@ -122,7 +133,7 @@ function edit_write_here(){
         $output = write_here_edit_form();
         return $output;
     }else{
-        echo 'Please Sign in to continue...';
+        echo 'Please <a href="'.wp_login_url().'" title="Login">Login</a> to continue...';
     }
 }
 add_shortcode('write-here-edit', 'edit_write_here');

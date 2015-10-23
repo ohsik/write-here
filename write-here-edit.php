@@ -7,10 +7,10 @@
 */
 function write_here_edit_form(){
     $nonce = $_REQUEST['_wpnonce'];
-    //if ( !wp_verify_nonce( $nonce ) ) {
+    if ( !wp_verify_nonce( $nonce ) ) {
         // This nonce is not valid.
-    //    die( 'Security check' ); 
-    //} else {
+        die( 'Security check' ); 
+    } else {
 
         $post_id = $_REQUEST['post'];
 
@@ -34,13 +34,20 @@ function write_here_edit_form(){
             
             <label for="wh_image_upload">Featured Image</label>
             <?php 
+                //http://wordpress.stackexchange.com/questions/36361/delete-attachment-from-front-end
                 if(get_the_post_thumbnail($post_id)){
-                    echo '<div class="wh-f-img">';
-                    echo get_the_post_thumbnail($post_id, 'thumbnail');
-                    echo '<p id="rm_fi">Remove</p>';
-                    echo '</div>';
-                }else{
-            ?>
+                    $attachment_id = get_post_thumbnail_id( $post_id );
+                    ?>
+                    <div class="wh-f-img">
+                    <?php
+                    echo get_the_post_thumbnail($post_id, 'thumbnail', array('class' => 'file-'.$attachment_id.''));
+                    ?>
+                    <p id="rm_fi"><a class="remImage" name="<?php echo $attachment_id; ?>" href=""><?php _e('Delete');?></a></p>
+                    <input type="hidden" id="att_remove" name="att_remove[]" value="<?php echo $attachment_id; ?>" />
+                    <input type="hidden" name="nonce" id="nonce" value="<?php echo wp_create_nonce( 'delete_attachment' ); ?>" />
+                    </div>
+                    <input type="file" name="wh_image_upload" id="wh_image_upload" multiple="false" style="display: none;" />
+            <?php }else{ ?>
             <input type="file" name="wh_image_upload" id="wh_image_upload" multiple="false" />
             <?php } ?>
             <label for="title">Title</label>
@@ -77,7 +84,7 @@ function write_here_edit_form(){
     </div>
     <?php  
         }else{ echo"It need post to edit."; } // post_id close
-    //} //nonce close
+    } //nonce close
 }
 
 /*
@@ -132,6 +139,18 @@ function write_here_edit_post() {
 		if(empty($errors)) {
             //save the new post and return its ID
             $post_id = wp_update_post($edit_post);
+            
+            // These files need to be included as dependencies when on the front end.
+            require_once( ABSPATH . 'wp-admin/includes/image.php' );
+            require_once( ABSPATH . 'wp-admin/includes/file.php' );
+            require_once( ABSPATH . 'wp-admin/includes/media.php' );
+
+            // Let WordPress handle the upload.
+            $attachment_id = media_handle_upload( 'wh_image_upload', $post_id );
+            if ( !is_wp_error( $attachment_id ) ) {
+                // If the image was uploaded successfully, set it as featured image
+                set_post_thumbnail( $post_id, $attachment_id );
+            }
         }
         
     }
