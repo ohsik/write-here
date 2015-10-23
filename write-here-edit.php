@@ -7,10 +7,10 @@
 */
 function write_here_edit_form(){
     $nonce = $_REQUEST['_wpnonce'];
-    if ( !wp_verify_nonce( $nonce ) ) {
+    //if ( !wp_verify_nonce( $nonce ) ) {
         // This nonce is not valid.
-        die( 'Security check' ); 
-    } else {
+    //    die( 'Security check' ); 
+    //} else {
 
         $post_id = $_REQUEST['post'];
 
@@ -77,7 +77,7 @@ function write_here_edit_form(){
     </div>
     <?php  
         }else{ echo"It need post to edit."; } // post_id close
-    } //nonce close
+    //} //nonce close
 }
 
 /*
