@@ -7,7 +7,8 @@ http://wordpress.stackexchange.com/questions/15283/i-am-trying-to-create-a-simpl
 ###Todos..
 
 1. Delete featured image does not work smoothly with AJAX (write-here-edit.php)
-2. Add Update success message after editing the post (Add it on the top of the form in write-here-edit.php)
+2. Client side validation and disable submit button after submitting
+2. AJAX image upload still needs to be implemented or progress bar on submit
 
 Please feel free to talk me for any comments or suggestions for this plug in
 o@ohsikpark.com
