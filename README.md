@@ -1,5 +1,6 @@
 #Write Here
-A simple front end form for WordPress.
+A simple front end form plug in for WordPress.
+Write Here allows registered users to post and manage articles from front end.
 
 **This is an open source project will go on plugin repository at WordPress.org for everyone!**
 https://plugins.svn.wordpress.org/write-here/
