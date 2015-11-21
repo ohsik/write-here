@@ -1,7 +1,7 @@
 #Write Here
 A simple front end form for WordPress.
 
-*This is an open source project will go on plugin repository at WordPress.org for everyone!*
+**This is an open source project will go on plugin repository at WordPress.org for everyone!**
 https://plugins.svn.wordpress.org/write-here/
 
 
