@@ -101,6 +101,13 @@ function get_existing_tags($post_id){
     } 
 }
 
+// Show success message on update post
+function write_here_show_success_messages() {
+    echo '<div class="form-success">';
+    echo 'Post Updated!';
+    echo '</div>';
+}
+
 /*
 **  Process data from edit form
     http://codex.wordpress.org/Function_Reference/wp_update_post

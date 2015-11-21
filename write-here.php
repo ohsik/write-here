@@ -67,13 +67,6 @@ function write_here_show_error_messages() {
 	}	
 }
 
-// Show success message on update post
-function write_here_show_success_messages() {
-    echo '<div class="form-success">';
-    echo 'Post Updated!';
-    echo '</div>';
-}
-
 // Delete featured image on edit page
 add_action( 'wp_ajax_delete_attachment', 'delete_attachment' );
 function delete_attachment( $post ) {
