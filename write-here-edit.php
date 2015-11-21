@@ -23,7 +23,7 @@ function write_here_edit_form(){
                 <div class="write-here edit">
                     <?php 
                         write_here_show_error_messages();
-                        //write_here_show_success_messages( 'Post Updated!' );    // <------------------------------------------------ Update Message need to be fixed
+                        do_action('form_message');
                     ?>
                     <form id="edit_post" name="edit_post" method="post" action="" enctype="multipart/form-data">
 
@@ -154,9 +154,9 @@ function write_here_edit_post() {
             //save the new post and return its ID
             $post_id = wp_update_post($edit_post);
             
-            // if post updated successfully. // <------------------------------------------------ Update Message need to be fixed
+            // if post updated successfully.
             if ( $post_id != 0 ) { 
-                write_here_show_success_messages( 'Update Post' );
+                add_action('form_message', 'write_here_show_success_messages' );
             } 
             
             // These files need to be included as dependencies when on the front end.

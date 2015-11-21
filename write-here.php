@@ -68,9 +68,9 @@ function write_here_show_error_messages() {
 }
 
 // Show success message on update post
-function write_here_show_success_messages( $success_msg ) {
+function write_here_show_success_messages() {
     echo '<div class="form-success">';
-    echo $success_msg;
+    echo 'Post Updated!';
     echo '</div>';
 }
 
