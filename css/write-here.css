@@ -41,8 +41,8 @@
     border: 1px solid #E65151;
 }
 .form-success{
-    color: #7DE651;
-    border: 1px solid #7DE651;
+    color: #81BF67;
+    border: 1px solid #81BF67;
 }
 .write-here-dashboard li{
     margin-bottom: 20px;
@@ -89,4 +89,13 @@
 }
 .wh-f-img{
     display: block;
+}
+#wh_img_preview{
+    border: 1px solid #eee;
+    margin: 10px 0;
+    width: 120px;
+    height: 120px;
+    display: none;
+    background-size: cover;
+    -moz-background-size: cover;
 }

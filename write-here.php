@@ -54,7 +54,7 @@ function write_here_errors(){
     return isset($wp_error) ? $wp_error : ($wp_error = new WP_Error(null, null, null));
 }
 
-// displays error messages from form submissions
+// Show error messages from form submissions
 function write_here_show_error_messages() {
 	if($codes = write_here_errors()->get_error_codes()) {
         echo '<div class="form-error">';
@@ -65,6 +65,13 @@ function write_here_show_error_messages() {
         }
         echo '</div>';
 	}	
+}
+
+// Show success message on update post
+function write_here_show_success_messages( $success_msg ) {
+    echo '<div class="form-success">';
+    echo $success_msg;
+    echo '</div>';
 }
 
 // Delete featured image on edit page
