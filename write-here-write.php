@@ -13,7 +13,9 @@ function write_here_form(){
     <form id="new_post" name="new_post" method="post" action="" enctype="multipart/form-data">
         
         <label for="wh_image_upload">Featured Image</label>
-        <div id="wh_img_preview"></div>
+        <div id="wh_img_preview">
+            <p class="prv_del">Delete</p>
+        </div>
         <input type="file" name="wh_image_upload" id="wh_image_upload" multiple="false" />
         
         <label for="title">Title</label>
@@ -34,9 +36,11 @@ function write_here_form(){
 
         <label for="date">Date</label>
         <div id="timestampdiv" class="hide-if-js"><?php write_here_time(0, 0, 5); ?></div>
-
+        
         <input type="submit" value="Publish" id="submit" name="submit" />
         <input type="hidden" name="action" value="write_here_new_post" />
+        <input type="hidden" name="wh_content_js" id="wh_content_js" value="" />
+        <input type="hidden" name="attachment_id" id="attachment_id" value="" />
         <?php wp_nonce_field( 'new-post', 'new-post-nonce' ); ?>
     </form>
 </div>
@@ -49,7 +53,10 @@ function write_here_form(){
     http://codex.wordpress.org/Function_Reference/wp_insert_post
 */
 function write_here_add_new_post() {
-    if( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) &&  $_POST['action'] == "write_here_new_post" && wp_verify_nonce( $_POST['new-post-nonce'], 'new-post' )  ) {
+    
+    //var_dump($_POST);
+    if( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) && $_POST['action'] == "write_here_new_post" && wp_verify_nonce( $_POST['new-post-nonce'], 'new-post' )  ) {
+
         // Set default date on the post
         $postdate = date('Y-m-d H:i:s');
         // Get values from front end form
@@ -60,9 +67,10 @@ function write_here_add_new_post() {
         $wh_min     = $_POST['mn'];
         $wh_sec     = $_POST['ss'];
         $title      = wp_strip_all_tags($_POST['title']);
-        $content    = $_POST['wh_content'];
+        $content    = $_POST['wh_content_js'];
         $tags       = $_POST['post_tags'];
         $cat        = $_POST['cat'];
+        $att_id     = $_POST['attachment_id'];
         
         // Server side validation
         if ($title == '') {
@@ -76,7 +84,7 @@ function write_here_add_new_post() {
         } else {
             $postdate = $wh_year.'-'.$wh_month.'-'.$wh_day.' '.$wh_hour.':'.$wh_min.':'.$wh_sec;
         }
-
+        
 
         // Add the content of the form to $post as an array
         $new_post = array(
@@ -95,27 +103,30 @@ function write_here_add_new_post() {
 		if(empty($errors)) {
             // save the new post and return its ID
             $post_id = wp_insert_post($new_post);
+            //echo "Added post id: ".$post_id;
             
-            // These files need to be included as dependencies when on the front end.
-            require_once( ABSPATH . 'wp-admin/includes/image.php' );
-            require_once( ABSPATH . 'wp-admin/includes/file.php' );
-            require_once( ABSPATH . 'wp-admin/includes/media.php' );
-
-            // Let WordPress handle the upload.
-            $attachment_id = media_handle_upload( 'wh_image_upload', $post_id );
-            if ( !is_wp_error( $attachment_id ) ) {
-                // If the image was uploaded successfully, set it as featured image
-                set_post_thumbnail( $post_id, $attachment_id );
-            }
-            
+            // if post added successfully.
             if($post_id) {
+                // Set thumbnail
+                // $newupload returns the attachment id of the file that
+                $newupload = set_post_thumbnail( $post_id, $att_id );
+                
+                // Set post_parent for attachemnt
+                wp_update_post(
+                    array(
+                        'ID' => $att_id, 
+                        'post_parent' => $post_id
+                    )
+                );
+
                 // This will redirect you to the newly created post (Using GUID)
                 $post = get_post($post_id);
-                wp_redirect($post->guid);
+                echo $post->guid;
+                
                 exit();
             }
         }
-        
     }
+    die();
 }
-add_action('init', 'write_here_add_new_post');
+add_action( 'wp_ajax_write_here_new_post', 'write_here_add_new_post' );

@@ -61,41 +61,49 @@ function write_here_dashboard(){
     
     // Show all posts by current user
     if($author_posts->have_posts()){
-        echo '<div class="write-here-dashboard"><ul>';
-        while($author_posts->have_posts()) : $author_posts->the_post();
-            $postsdb = get_post_status();
-        ?>
-            <li>
-                <p><a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></p>
-                <p class="wh-post-meta"><?php wh_post_status($postsdb); ?> on <i><?php echo get_the_date(); ?></i> <span class="wh-edit"> <?php wh_edit_post_link('Edit', '', ''); ?> / <?php wh_delete_post_link('Delete', '', ''); ?></span></p>
-            </li>
-        <?php           
-        endwhile;
-        echo '</ul></div>';
-        
-        // Show pagination for the posts
-        echo '<div class="wh-pagenavi">';
-            $big = 999999999999; // need an unlikely integer
-            $prev_arrow = is_rtl() ? '&rarr;' : '&larr;';
-		    $next_arrow = is_rtl() ? '&larr;' : '&rarr;';
-            
-            $args = array(
-                'base'         => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
-                'format'       => '?page=%#%',
-                'total'        => $pages,
-                'current'      => $page,
-                'show_all'     => False,
-                'end_size'     => 1,
-                'mid_size'     => 3,
-                'prev_next'    => True,
-                'prev_text'		=> $prev_arrow,
-				'next_text'		=> $next_arrow,
-                'type'         => 'list');
-                // ECHO THE PAGENATION 
-            echo paginate_links( $args );
+        echo '<div class="write-here-dashboard-wrap">';
+            echo '<div class="write-here-dashboard"><ul>';
+            while($author_posts->have_posts()) : $author_posts->the_post();
+                $postsdb = get_post_status();
+            ?>
+                <li>
+                    <div class="wh-list">
+                        <h2><a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
+                        <p class="wh-post-meta"><?php wh_post_status($postsdb); ?> on <i><?php echo get_the_date(); ?></i></p>
+                    </div>
+                    <div class="wh-edit">
+                        <?php wh_edit_post_link('Edit', '', ''); ?>
+                        <?php wh_delete_post_link('Delete', '', ''); ?>
+                    </div>
+                </li>
+            <?php           
+            endwhile;
+            echo '</ul></div>';
+
+            // Show pagination for the posts
+            echo '<div class="wh-pagenavi">';
+                $big = 999999999999; // need an unlikely integer
+                $prev_arrow = is_rtl() ? '&rarr;' : '&larr;';
+                $next_arrow = is_rtl() ? '&larr;' : '&rarr;';
+
+                $args = array(
+                    'base'         => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+                    'format'       => '?page=%#%',
+                    'total'        => $pages,
+                    'current'      => $page,
+                    'show_all'     => False,
+                    'end_size'     => 1,
+                    'mid_size'     => 3,
+                    'prev_next'    => True,
+                    'prev_text'		=> $prev_arrow,
+                    'next_text'		=> $next_arrow,
+                    'type'         => 'list');
+                    // ECHO THE PAGENATION 
+                echo paginate_links( $args );
+            echo '</div>';
+
+            wp_reset_query();
         echo '</div>';
-        
-        wp_reset_query();
     }else{
         echo '<p>Write your first post!</p>';
     }

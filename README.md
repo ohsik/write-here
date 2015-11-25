@@ -2,7 +2,7 @@
 A simple front end form plug in for WordPress.
 Write Here allows registered users to post and manage articles from front end.
 
-**This is an open source project will go on plugin repository at WordPress.org for everyone!**
+**This is an open source project will go on plug in repository at WordPress.org for everyone!**
 https://wordpress.org/plugins/write-here/
 
 
@@ -11,13 +11,17 @@ http://wordpress.stackexchange.com/questions/15283/i-am-trying-to-create-a-simpl
 
 ###Todos..
 
-1. AJAX image upload still needs to be implemented or progress bar on submit
-2. Delete featured image does not work smoothly with AJAX (write-here-edit.php)
-3. Client side validation and disable submit button after submitting
+1. AJAX image upload progress bar
+2. Server side validation needs to be fixed
+3. Inline images uploaded by `Add Media` button need to update `post_parent` to the newly created post's ID
 
-
-Please feel free to talk me for any comments or suggestions for this plug in
+###Plans
+*I'm thinking about making this to a single page application(kind of) using AJAX technology. You only have to add one shortcode into your page/post and on that page, you can write, read, edit and delete all of your content.*
+Yes, I definitely need your help to make this plug in better. Sounds interesting to you? Please feel free to talke me at
 o@ohsikpark.com
+
+###Library used
+- jQuery Validation Plug in (http://jqueryvalidation.org/)
 
 ###License
 License: GPL2

@@ -4,7 +4,7 @@ Plugin Name: Write Here
 Plugin URI: http://wp.ohsikpark.com/write-here/
 Description: Simple front end form for WordPress. Write Here will allow you to have registered users to write & manage articles from front end.
 Author: Ohsik Park
-Version: 0.1
+Version: 1.1
 Author URI: http://www.ohsikpark.com
 Text Domain: write-here
 License: GPL2
@@ -27,7 +27,6 @@ require_once( dirname( __FILE__ ) . '/admin/write-here-admin.php' );
 // register our form css
 function write_here_register_assets() {
 	wp_register_style('write-here', WH_PATH . '/css/write-here.css');
-    wp_register_script( 'write-here', WH_PATH . '/js/write-here.js', array( 'jquery' ), '1.0', true );
 }
 add_action('init', 'write_here_register_assets');
 
@@ -39,7 +38,6 @@ function write_here_print_assets() {
 		return;
  
 	wp_print_styles('write-here');
-    wp_print_scripts('write-here');
 }
 add_action('wp_footer', 'write_here_print_assets');
 
@@ -48,7 +46,55 @@ if( !function_exists( 'write_here_time' ) || !function_exists( 'write_here_time_
     require_once( dirname( __FILE__ ) . '/write-here-time.php' );
 }
 
-// used for tracking error messages
+// Load JS for AJAX
+function wh_enqueue() {
+    wp_enqueue_script( 'validate', WH_PATH . '/js/jquery.validate.min.js', array('jquery'), '1.0.0', true );
+    wp_enqueue_script( 'ajax-script', WH_PATH . '/js/write.js', array('jquery'), '1.0.0', true );
+    wp_localize_script( 'ajax-script', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' )) );
+}
+add_action( 'wp_enqueue_scripts', 'wh_enqueue' );
+
+
+/*
+**  Image upload with AJAX
+    Used on Write and Edit forms
+*/
+function write_here_featured_image_upload() {
+    //var_dump($_FILES);
+    
+    // Temporary post id
+    $post_id = 0;
+    
+    // These files need to be included as dependencies when on the front end.
+    require_once( ABSPATH . 'wp-admin/includes/image.php' );
+    require_once( ABSPATH . 'wp-admin/includes/file.php' );
+    require_once( ABSPATH . 'wp-admin/includes/media.php' );
+
+    // Let WordPress handle the upload.
+    $attachment_id = media_handle_upload('file' , $post_id );
+    $image_attributes = wp_get_attachment_image_src( $attachment_id, 'thumbnail' );
+    
+    // Send value back to jQuery
+    echo json_encode(array("att_id" => $attachment_id, "att_url" => $image_attributes[0]));
+    
+    die();
+}
+add_action( 'wp_ajax_write_here_img_upload', 'write_here_featured_image_upload' );
+
+/*
+**  Delete featured image on edit page
+    Used on Write and Edit forms
+*/
+function delete_attachment( $post ) {
+    $msg = 'Attachment ID [' . $_POST['att_ID'] . '] has been deleted!';
+    if( wp_delete_attachment( $_POST['att_ID'], true )) {
+        echo $msg;
+    }
+    die();
+}
+add_action( 'wp_ajax_delete_attachment', 'delete_attachment' );
+
+// Tracking error messages
 function write_here_errors(){
     static $wp_error; // Will hold global variable safely
     return isset($wp_error) ? $wp_error : ($wp_error = new WP_Error(null, null, null));
@@ -65,17 +111,6 @@ function write_here_show_error_messages() {
         }
         echo '</div>';
 	}	
-}
-
-// Delete featured image on edit page
-add_action( 'wp_ajax_delete_attachment', 'delete_attachment' );
-function delete_attachment( $post ) {
-    //echo $_POST['att_ID'];
-    $msg = 'Attachment ID [' . $_POST['att_ID'] . '] has been deleted!';
-    if( wp_delete_attachment( $_POST['att_ID'], true )) {
-        echo $msg;
-    }
-    die();
 }
 
 /*
@@ -101,7 +136,6 @@ add_shortcode('write-here', 'form_write_here');
 /*
 **  Add a shortcode for dashboard
     [write-here-dashboard]
-    https://codex.wordpress.org/Function_Reference/add_shortcode
 */
 function dashboard_write_here(){
     // Load CSS & JS files
@@ -121,7 +155,6 @@ add_shortcode('write-here-dashboard', 'dashboard_write_here');
 /*
 **  Add a shortcode for edit form
     [write-here-edit]
-    https://codex.wordpress.org/Function_Reference/add_shortcode
 */
 function edit_write_here(){
     // Load CSS & JS files

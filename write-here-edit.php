@@ -10,43 +10,38 @@ function write_here_edit_form(){
     if(isset($_REQUEST['_wpnonce'])){
         $nonce = $_REQUEST['_wpnonce'];
         
-        if ( !wp_verify_nonce( $nonce ) ) {
+        if ( !wp_verify_nonce( $nonce ) ){
             // This nonce is not valid.
             die( 'Security check' ); 
         } else {
             // nonce is valid, show edit form
             $post_id = $_REQUEST['post'];
             if ($post_id){
+                
+                // Get post info
                 $post_to_edit = get_post($post_id);
-
+                $attachment_id = get_post_thumbnail_id( $post_id );
         ?>
                 <div class="write-here edit">
                     <?php 
                         write_here_show_error_messages();
-                        do_action('form_message');
                     ?>
                     <form id="edit_post" name="edit_post" method="post" action="" enctype="multipart/form-data">
 
                         <label for="wh_image_upload">Featured Image</label>
-                        <div id="wh_img_preview"></div>
-                        <?php 
-                            //http://wordpress.stackexchange.com/questions/36361/delete-attachment-from-front-end
-                            if(get_the_post_thumbnail($post_id)){
-                                $attachment_id = get_post_thumbnail_id( $post_id );
-                                ?>
-                                <div class="wh-f-img">
-                                    <?php
-                                        echo get_the_post_thumbnail($post_id, 'thumbnail', array('class' => 'file-'.$attachment_id.''));
-                                    ?>
-                                    <p id="rm_fi"><a class="remImage" name="<?php echo $attachment_id; ?>" href=""><?php _e('Delete'); ?></a></p> <?php //<---------------- AJAX delete does not work smoothly ?>
-                                    <input type="hidden" id="att_remove" name="att_remove[]" value="<?php echo $attachment_id; ?>" />
-                                    <input type="hidden" name="nonce" id="nonce" value="<?php echo wp_create_nonce( 'delete_attachment' ); ?>" />
-                                    <script type="text/javascript"> var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>'; </script>
-                                </div>
-                                <input type="file" name="wh_image_upload" id="wh_image_upload" multiple="false" style="display: none;" />
+                        
+                        <?php if($attachment_id){ ?>
+                            <div id="wh_img_preview" style="display:block; background: url(<?php echo wp_get_attachment_thumb_url( $attachment_id ); ?>);">
+                                <p class="prv_del">Delete</p>
+                            </div>
+                            <input type="file" name="wh_image_upload" id="wh_image_upload" multiple="false" style="display: none;" />
                         <?php }else{ ?>
+                            <div id="wh_img_preview">
+                                <p class="prv_del">Delete</p>
+                            </div>
                             <input type="file" name="wh_image_upload" id="wh_image_upload" multiple="false" />
                         <?php } ?>
+                        
                         <label for="title">Title</label>
                         <input type="text" id="title" name="title" value="<?php echo $post_to_edit->post_title; ?>" />
 
@@ -75,6 +70,8 @@ function write_here_edit_form(){
 
                         <input type="submit" value="Update" id="submit" name="submit" />
                         <input type="hidden" name="action" value="write_here_edit_post" />
+                        <input type="hidden" name="wh_content_js" id="wh_content_js" value="" />
+                        <input type="hidden" name="attachment_id" id="attachment_id" value="<?php echo $attachment_id; ?>" />
                         <input type="hidden" name="pid" value="<?php echo $post_to_edit->ID; ?>" />
                         <?php wp_nonce_field( 'edit-post', 'edit-post-nonce' ); ?>
                     </form>
@@ -101,13 +98,6 @@ function get_existing_tags($post_id){
     } 
 }
 
-// Show success message on update post
-function write_here_show_success_messages() {
-    echo '<div class="form-success">';
-    echo 'Post Updated!';
-    echo '</div>';
-}
-
 /*
 **  Process data from edit form
     http://codex.wordpress.org/Function_Reference/wp_update_post
@@ -125,9 +115,10 @@ function write_here_edit_post() {
         $wh_min     = $_POST['mn'];
         $wh_sec     = $_POST['ss'];
         $title      = wp_strip_all_tags($_POST['title']);
-        $content    = $_POST['wh_content'];
+        $content    = $_POST['wh_content_js'];
         $tags       = $_POST['post_tags'];
         $cat        = $_POST['cat'];
+        $att_id     = $_POST['attachment_id'];
         
         // Server side validation
         if ($title == '') {
@@ -141,7 +132,7 @@ function write_here_edit_post() {
         } else {
             $postdate = $wh_year.'-'.$wh_month.'-'.$wh_day.' '.$wh_hour.':'.$wh_min.':'.$wh_sec;
         }
-
+        
         // Add the content of the form to $post as an array
         $edit_post = array(
             'ID'            => $pid,
@@ -160,25 +151,31 @@ function write_here_edit_post() {
 		if(empty($errors)) {
             //save the new post and return its ID
             $post_id = wp_update_post($edit_post);
+            //echo "Updated post id: ".$post_id;
             
             // if post updated successfully.
-            if ( $post_id != 0 ) { 
-                add_action('form_message', 'write_here_show_success_messages' );
+            if ($post_id) {
+                // Set thumbnail
+                // $newupload returns the attachment id of the file that
+                $newupload = set_post_thumbnail( $post_id, $att_id );
+        
+                // Set post_parent for attachemnt
+                wp_update_post(
+                    array(
+                        'ID' => $att_id, 
+                        'post_parent' => $post_id
+                    )
+                );
+                
+                // This will redirect you to the newly created post (Using GUID)
+                $post = get_post($post_id);
+                echo $post->guid;
+                
+                exit();
             } 
-            
-            // These files need to be included as dependencies when on the front end.
-            require_once( ABSPATH . 'wp-admin/includes/image.php' );
-            require_once( ABSPATH . 'wp-admin/includes/file.php' );
-            require_once( ABSPATH . 'wp-admin/includes/media.php' );
-
-            // Let WordPress handle the upload.
-            $attachment_id = media_handle_upload( 'wh_image_upload', $post_id );
-            if ( !is_wp_error( $attachment_id ) ) {
-                // If the image was uploaded successfully, set it as featured image
-                set_post_thumbnail( $post_id, $attachment_id );
-            }
         }
         
     }
+    die();
 }
-add_action('init', 'write_here_edit_post');
+add_action( 'wp_ajax_write_here_edit_post', 'write_here_edit_post' );

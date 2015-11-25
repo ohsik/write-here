@@ -2,6 +2,10 @@
     box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
+.write-here{
+    width: 100%;
+    display: inline-block;
+}
 .write-here label{
     font-size: 80%;
 }
@@ -11,7 +15,7 @@
     font-size: 16px;
     margin-bottom: 10px;
     width: 100%;
-    padding: 10px;
+    padding: 15px;
     border: 1px solid #ddd;
     margin-bottom: 10px;
     display: inline-block;
@@ -22,6 +26,21 @@
     color: #fff;
     border: none;
     margin: 10px 0;
+}
+.write-here .error{
+    border: 1px solid #E44646;
+    margin-bottom: 2px;
+}
+.write-here label.error{
+    width: 100%;
+    display: inline-block;
+    color: #E44646;
+    border: none;
+    margin-bottom: 10px;
+    font-size: 80%;
+}
+.write-here input[type="submit"]:disabled{
+    cursor: wait;
 }
 .timestamp-wrap label span{
     display: none;
@@ -44,16 +63,52 @@
     color: #81BF67;
     border: 1px solid #81BF67;
 }
+.write-here-dashboard-wrap{
+    width: 100%;
+    display: inline-block;
+}
+.write-here-dashboard ul{
+    padding: 0;
+    margin: 0;
+}
 .write-here-dashboard li{
     margin-bottom: 20px;
-}
-.write-here-dashboard p{
+    padding: 10px 0;
+    list-style: none;
+    border-bottom: 1px solid #ddd;
     display: inline-block;
     width: 100%;
-    margin: 0;
+}
+.wh-list{
+    width: auto;
+    max-width: 70%;
+    float: left;
+}
+.wh-edit{
+    width: auto;
+    float: right;
+    padding: 13px 0;
+}
+.wh-edit a{
+    display: inline-block;
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 10px;
+    margin: 0 5px;
+    background: #F9B436;
+    font-size: 80%;
+}
+.wh-edit a:last-child{
+    background: #E44646;
+}
+.write-here-dashboard h2{
+    display: inline-block;
+    width: 100%;
+    margin: 10px 0 0 0;
 }
 .wh-post-meta{
     font-size: 80%;
+    margin: 5px 0;
 }
 /* WP editor - WYSIWYG editor with media button */
 .wp-editor-wrap{
@@ -64,7 +119,7 @@
 }
 .wp-editor-container textarea{
     border: none;
-    height: 300px;
+    height: 200px;
 }
 .quicktags-toolbar input{
     width: auto;
@@ -87,15 +142,25 @@
     border: 1px solid #ddd;
     background: #fff;
 }
-.wh-f-img{
-    display: block;
-}
 #wh_img_preview{
-    border: 1px solid #eee;
+    border: 1px solid #ddd;
     margin: 10px 0;
     width: 120px;
     height: 120px;
     display: none;
     background-size: cover;
     -moz-background-size: cover;
+    position: relative;
+}
+.prv_del{
+    position: absolute;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    bottom: 0;
+    background: #E44646;
+    color: #fff;
+    cursor: pointer;
+    padding: 0px;
+    font-size: 80%;
 }
