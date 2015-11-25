@@ -17,7 +17,8 @@ http://wordpress.stackexchange.com/questions/15283/i-am-trying-to-create-a-simpl
 
 ###Plans
 *I'm thinking about making this to a single page application(kind of) using AJAX technology. You only have to add one shortcode into your page/post and on that page, you can write, read, edit and delete all of your content.*
-Yes, I definitely need your help to make this plug in better. Sounds interesting to you? Please feel free to talke me at
+
+######Yes, I definitely need your help to make this plug in better. Sounds interesting to you? Please feel free to talke me at
 o@ohsikpark.com
 
 ###Library used
