@@ -164,3 +164,15 @@
     padding: 0px;
     font-size: 80%;
 }
+#loading_ajax{
+    width: 32px;
+    height: 32px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -16px;
+    margin-left: -16px;
+    z-index: 9;
+    display: none;
+    background: url(../img/load.gif) no-repeat center center;
+}

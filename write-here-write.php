@@ -11,7 +11,6 @@ function write_here_form(){
 <div class="write-here write">
     <?php write_here_show_error_messages(); ?>
     <form id="new_post" name="new_post" method="post" action="" enctype="multipart/form-data">
-        
         <label for="wh_image_upload">Featured Image</label>
         <div id="wh_img_preview">
             <p class="prv_del">Delete</p>

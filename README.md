@@ -11,14 +11,13 @@ http://wordpress.stackexchange.com/questions/15283/i-am-trying-to-create-a-simpl
 
 ###Todos..
 
-1. AJAX image upload progress bar
+1. Better way for AJAX loading gif
 2. Server side validation needs to be fixed
 3. Inline images uploaded by `Add Media` button need to update `post_parent` to the newly created post's ID
 
 ###Plans
 *I'm thinking about making this to a single page application(kind of) using AJAX technology. You only have to add one shortcode into your page/post and on that page, you can write, read, edit and delete all of your content.*
-
-######Yes, I definitely need your help to make this plug in better. Sounds interesting to you? Please feel free to talke me at
+Yes, I definitely need your help to make this plug in better. Sounds interesting to you? Please feel free to talke me at
 o@ohsikpark.com
 
 ###Library used

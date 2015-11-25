@@ -147,4 +147,16 @@ jQuery(document).ready( function($) {
         }
     });
     
+    /*
+    **  Show loading gif on AJAX requests
+    */
+    var loading = $('<div id="loading_ajax"></div>');
+    $(document).ajaxStart(function() {
+        $('body').append( loading );
+        $('#loading_ajax').show();
+    });
+    $(document).ajaxStop(function() {
+        $('#loading_ajax').hide();
+    });
+    
 });

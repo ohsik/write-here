@@ -27,9 +27,7 @@ function write_here_edit_form(){
                         write_here_show_error_messages();
                     ?>
                     <form id="edit_post" name="edit_post" method="post" action="" enctype="multipart/form-data">
-
                         <label for="wh_image_upload">Featured Image</label>
-                        
                         <?php if($attachment_id){ ?>
                             <div id="wh_img_preview" style="display:block; background: url(<?php echo wp_get_attachment_thumb_url( $attachment_id ); ?>);">
                                 <p class="prv_del">Delete</p>
