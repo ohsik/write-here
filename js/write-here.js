@@ -20,7 +20,25 @@ jQuery(document).ready( function($) {
         var userFile    =   new FormData();  
         var fileInput   =   $( '#wh_image_upload' )[0].files[0];
         //console.log(fileInput);
-
+        
+        // Allow image files only to upload 
+        var imagefile = fileInput.type;
+        var match= ["image/jpeg","image/png","image/jpg","image/gif"];
+        if(!((imagefile==match[0]) || (imagefile==match[1]) || (imagefile==match[2]) || (imagefile==match[3])))
+        {
+            alert('Image file only');
+            $('#wh_image_upload').val('');
+            $('#attachment_id').val('');
+            return false;
+        }
+        // Set max file upload size
+        if(fileInput.size > 10485760){
+            alert('Max upload file size 10 MB');
+            $('#wh_image_upload').val('');
+            $('#attachment_id').val('');
+            return false;
+        }
+        
         userFile.append('file', fileInput);
         userFile.append('action', 'write_here_img_upload');
         userFile.append('security', ajax_object.ajax_nonce);
@@ -104,6 +122,7 @@ jQuery(document).ready( function($) {
                     console.error('The following error occured: ' + textStatus, errorThrown);                                                  
                 },
                 success: function(data) {
+                    console.log('Post Added! ' + data);
                     // Redirect to new post
                     window.location.href = data;
                 }  

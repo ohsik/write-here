@@ -49,7 +49,7 @@ if( !function_exists( 'write_here_time' ) || !function_exists( 'write_here_time_
 // Load and localize JS for AJAX
 function wh_enqueue() {
     wp_enqueue_script( 'validate', WH_PATH . '/js/jquery.validate.min.js', array('jquery'), '1.0.0', true );
-    wp_enqueue_script( 'ajax-script', WH_PATH . '/js/write.js', array('jquery'), '1.0.0', true );
+    wp_enqueue_script( 'ajax-script', WH_PATH . '/js/write-here.js', array('jquery'), '1.0.0', true );
     wp_localize_script( 'ajax-script', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ), 'ajax_nonce' => wp_create_nonce('wh_obj_ajax')) );
 }
 add_action( 'wp_enqueue_scripts', 'wh_enqueue' );
