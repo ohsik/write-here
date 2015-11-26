@@ -46,11 +46,11 @@ if( !function_exists( 'write_here_time' ) || !function_exists( 'write_here_time_
     require_once( dirname( __FILE__ ) . '/write-here-time.php' );
 }
 
-// Load JS for AJAX
+// Load and localize JS for AJAX
 function wh_enqueue() {
     wp_enqueue_script( 'validate', WH_PATH . '/js/jquery.validate.min.js', array('jquery'), '1.0.0', true );
     wp_enqueue_script( 'ajax-script', WH_PATH . '/js/write.js', array('jquery'), '1.0.0', true );
-    wp_localize_script( 'ajax-script', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' )) );
+    wp_localize_script( 'ajax-script', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ), 'ajax_nonce' => wp_create_nonce('wh_obj_ajax')) );
 }
 add_action( 'wp_enqueue_scripts', 'wh_enqueue' );
 
@@ -60,6 +60,7 @@ add_action( 'wp_enqueue_scripts', 'wh_enqueue' );
     Used on Write and Edit forms
 */
 function write_here_featured_image_upload() {
+    check_ajax_referer( 'wh_obj_ajax', 'security' );
     //var_dump($_FILES);
     
     // Temporary post id
@@ -86,6 +87,8 @@ add_action( 'wp_ajax_write_here_img_upload', 'write_here_featured_image_upload' 
     Used on Write and Edit forms
 */
 function delete_attachment( $post ) {
+    check_ajax_referer( 'wh_obj_ajax', 'security' );
+    
     $msg = 'Attachment ID [' . $_POST['att_ID'] . '] has been deleted!';
     if( wp_delete_attachment( $_POST['att_ID'], true )) {
         echo $msg;

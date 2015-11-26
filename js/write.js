@@ -23,6 +23,7 @@ jQuery(document).ready( function($) {
 
         userFile.append('file', fileInput);
         userFile.append('action', 'write_here_img_upload');
+        userFile.append('security', ajax_object.ajax_nonce);
         
         $.ajax({
             type: 'POST',
@@ -60,7 +61,8 @@ jQuery(document).ready( function($) {
             data: {
                 action: 'delete_attachment',
                 att_ID: attID,
-                post_type: 'attachment'
+                post_type: 'attachment',
+                security: ajax_object.ajax_nonce
             },
             success: function() {
                 console.log(attID + ' Removed!');
@@ -90,7 +92,7 @@ jQuery(document).ready( function($) {
             $('#new_post #submit').attr('disabled', true).val('Submitting!');
             
             // Serialize form data
-            dataString = $('#new_post').serialize();     
+            dataString = $('#new_post').serialize();
             
             // Post data AJAX
             $.ajax({
@@ -101,8 +103,7 @@ jQuery(document).ready( function($) {
                 error: function(jqXHR, textStatus, errorThrown){                                        
                     console.error('The following error occured: ' + textStatus, errorThrown);                                                  
                 },
-                success: function(data) {                                       
-                    console.log('Post Added! ' + data);
+                success: function(data) {
                     // Redirect to new post
                     window.location.href = data;
                 }  
