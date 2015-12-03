@@ -10,9 +10,9 @@ function wh_edit_post_link($link = 'Edit', $before = '', $after = '') {
     global $post;
     
     // Get plug in options for Edit page URL
-    $wh_option_values = get_option( 'wirte_here_options' );
+    $wh_option_values = get_option('write_here_options');
     $edit_page_id = $wh_option_values['pid_num'];
-    
+
     $editLink = wp_nonce_url( get_bloginfo('url') . "/?p=".$edit_page_id."/?action=edit&post=" . $post->ID); 
     $htmllink = "<a href='" . $editLink . "'>".$link."</a>";
     echo $before . $htmllink . $after;
