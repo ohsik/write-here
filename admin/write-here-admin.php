@@ -3,6 +3,7 @@
 **  Add admin menu in backend
     https://codex.wordpress.org/Creating_Options_Pages
 */
+
 class WriteHereSettingsPage
 {
     /**
@@ -40,7 +41,7 @@ class WriteHereSettingsPage
     public function create_admin_page()
     {
         // Set class property
-        $this->options = get_option( 'wirte_here_options' );
+        $this->options = get_option( 'write_here_options' );
         ?>
         <div class="wrap">
             <h1>Write Here</h1>
@@ -72,7 +73,7 @@ class WriteHereSettingsPage
     {        
         register_setting(
             'my_option_group', // Option group
-            'wirte_here_options', // Option name
+            'write_here_options', // Option name
             array( $this, 'sanitize' ) // Sanitize
         );
 
@@ -83,7 +84,6 @@ class WriteHereSettingsPage
             'write-here-setting' // Page
         );  
 
-    
         add_settings_field(
             "pid_num", 
             "Select Page >>", 
@@ -91,6 +91,14 @@ class WriteHereSettingsPage
             "write-here-setting", 
             "setting_section_id"
         );
+        
+        add_settings_field(
+            'num_of_posts', // ID
+            'Number of Posts to show', // Title 
+            array( $this, 'num_of_posts_callback' ), // Callback
+            'write-here-setting', // Page
+            'setting_section_id' // Section           
+        ); 
    
     }
 
@@ -104,10 +112,13 @@ class WriteHereSettingsPage
         $new_input = array();
         if( isset( $input['pid_num'] ) )
             $new_input['pid_num'] = absint( $input['pid_num'] );
-
+        
+        if( isset( $input['num_of_posts'] ) )
+            $new_input['num_of_posts'] = absint( $input['num_of_posts'] );
+        
         return $new_input;
     }
-
+    
     /** 
      * Print the Section text
      */
@@ -118,14 +129,24 @@ class WriteHereSettingsPage
     
     public function wh_select_list() 
     {
-        $options = get_option("wirte_here_options");
-
+        $options = get_option("write_here_options");
         wp_dropdown_pages(
             array(
-                 'name' => 'wirte_here_options[pid_num]',
+                 'name' => 'write_here_options[pid_num]',
                  'show_option_none' => __( 'Select' ),
                  'selected' => $options['pid_num']
             )
+        );
+    }
+    
+    /** 
+     * Get the settings option array and print one of its values
+     */
+    public function num_of_posts_callback()
+    {
+        printf(
+            '<input type="number" placeholder="Number Only" min="1" id="num_of_posts" name="write_here_options[num_of_posts]" value="%s" required />',
+            isset( $this->options['num_of_posts'] ) ? esc_attr( $this->options['num_of_posts']) : ''
         );
     }
 

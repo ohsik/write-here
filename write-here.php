@@ -3,8 +3,8 @@
 Plugin Name: Write Here
 Plugin URI: http://wp.ohsikpark.com/write-here/
 Description: Simple front end form for WordPress. Write Here will allow you to have registered users to write & manage articles from front end.
-Author: Ohsik Park
-Version: 1.1
+Author: writegnj
+Version: 1.2
 Author URI: http://www.ohsikpark.com
 Text Domain: write-here
 License: GPL2
@@ -18,7 +18,25 @@ define('WH_PATH', plugins_url() . '/write-here');
 require_once( dirname( __FILE__ ) . '/write-here-write.php' );
 require_once( dirname( __FILE__ ) . '/write-here-dashboard.php' );
 require_once( dirname( __FILE__ ) . '/write-here-edit.php' );
+require_once( dirname( __FILE__ ) . '/write-here-ajax.php' );
 require_once( dirname( __FILE__ ) . '/admin/write-here-admin.php' );
+
+/**
+ * Setting default settings on plugin activation only 
+ */
+function write_here_activation_actions(){
+    do_action( 'wp_writehere_extension_activation' );
+}
+register_activation_hook( __FILE__, 'write_here_activation_actions' );
+// Set default values here
+function write_here_default_options(){
+    $default = array(
+        'pid_num'     => '0',
+        'num_of_posts'   => '10'
+    );
+    update_option( 'write_here_options', $default );
+}
+add_action( 'wp_writehere_extension_activation', 'write_here_default_options' );
 
 /*
 **  Register CSS & JS assets for plug in
@@ -48,6 +66,8 @@ if( !function_exists( 'write_here_time' ) || !function_exists( 'write_here_time_
 
 // Load and localize JS for AJAX
 function wh_enqueue() {
+    wp_enqueue_style( 'themename-style', get_stylesheet_uri(), array( 'dashicons' ), '1.0', true );
+    wp_register_script( 'wh-ajax-app', WH_PATH . '/js/write-here-ajax.js', array('jquery'), '1.0.0', true );
     wp_enqueue_script( 'validate', WH_PATH . '/js/jquery.validate.min.js', array('jquery'), '1.0.0', true );
     wp_enqueue_script( 'ajax-script', WH_PATH . '/js/write-here.js', array('jquery'), '1.0.0', true );
     wp_localize_script( 'ajax-script', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ), 'ajax_nonce' => wp_create_nonce('wh_obj_ajax')) );
@@ -131,7 +151,7 @@ function form_write_here(){
         $output = write_here_form();
         return $output;
     }else{
-        echo 'Please <a href="'.wp_login_url().'" title="Login">Login</a> to continue...';
+        echo '<p class="login-write-here">Please <a href="'.wp_login_url().'" title="Login">Login</a> to continue...</p>';
     }
 }
 add_shortcode('write-here', 'form_write_here');
@@ -141,16 +161,15 @@ add_shortcode('write-here', 'form_write_here');
     [write-here-dashboard]
 */
 function dashboard_write_here(){
-    // Load CSS & JS files
+
     global $write_here_load_assets;
     $write_here_load_assets = true;
     
-    // Show only to logged in users
     if ( is_user_logged_in() ) {
         $output = write_here_dashboard();
         return $output;
     }else{
-        echo 'Please <a href="'.wp_login_url().'" title="Login">Login</a> to continue...';
+        echo '<p class="login-write-here">Please <a href="'.wp_login_url().'" title="Login">Login</a> to continue...</p>';
     }
 }
 add_shortcode('write-here-dashboard', 'dashboard_write_here');
@@ -160,19 +179,40 @@ add_shortcode('write-here-dashboard', 'dashboard_write_here');
     [write-here-edit]
 */
 function edit_write_here(){
-    // Load CSS & JS files
+    
     global $write_here_load_assets;
     $write_here_load_assets = true;
     
-    // Show only to logged in users
     if ( is_user_logged_in() ) {
         $output = write_here_edit_form();
         return $output;
     }else{
-        echo 'Please <a href="'.wp_login_url().'" title="Login">Login</a> to continue...';
+        echo '<p class="login-write-here">Please <a href="'.wp_login_url().'" title="Login">Login</a> to continue...</p>';
     }
 }
 add_shortcode('write-here-edit', 'edit_write_here');
+
+/*
+**  Add a shortcode for edit form
+    [write-here-ajax]
+*/
+function ajax_write_here(){
+
+    global $write_here_load_assets;
+    $write_here_load_assets = true;
+    
+    if ( is_user_logged_in() ) {
+        wp_enqueue_script( 'wh-ajax-app' );
+        $output = '<div id="wh-form-on-ajax-page" style="display: none;">';
+        $output .= write_here_form();
+        $output .= '</div>';
+        $output .= '<div id="write_here_ajax_wrap"></div>';
+        return $output;
+    }else{
+        echo '<p class="login-write-here">Please <a href="'.wp_login_url().'" title="Login">Login</a> to continue...</p>';
+    }
+}
+add_shortcode('write-here-ajax', 'ajax_write_here');
 
 // Add plug in link to setting page
 function write_here_action_links( $links ) {

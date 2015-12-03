@@ -2,54 +2,27 @@
 /*
 **  Write Here 
 
-    Dashboard, shows all posts by current user
+    AJAX APP. Write and Manage on the same page
     ------------------------------------------------------------------
 */
-// Edit post function
-function wh_edit_post_link($link = 'Edit', $before = '', $after = '') {
-    global $post;
+function write_here_ajax_dashboard() {
+    check_ajax_referer( 'wh_obj_ajax', 'security' );
     
-    // Get plug in options for Edit page URL
-    $wh_option_values = get_option( 'wirte_here_options' );
-    $edit_page_id = $wh_option_values['pid_num'];
+    // If page number exists
+    if(isset($_GET['page'])){
+        $page = $_GET['page'];
+    }else{
+        $page = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+    }
     
-    $editLink = wp_nonce_url( get_bloginfo('url') . "/?p=".$edit_page_id."/?action=edit&post=" . $post->ID); 
-    $htmllink = "<a href='" . $editLink . "'>".$link."</a>";
-    echo $before . $htmllink . $after;
-}
-
-// Delete post function
-function wh_delete_post_link($link = 'Delete', $before = '', $after = '') {
-    global $post;
-    
-    $message = "Are you sure you want to delete ".get_the_title($post->ID)." ?";
-    $delLink = wp_nonce_url( get_bloginfo('url') . "/wp-admin/post.php?action=delete&post=" . $post->ID, 'delete-post_' . $post->ID);
-    $htmllink = "<a href='" . $delLink . "' onclick = \"if ( confirm('".$message."' ) ) { return true; } return false;\">".$link."</a>";
-    echo $before . $htmllink . $after;
-}
-
-function wh_post_status($postsdb){
-    if ($postsdb == "future"):
-        $wp_ps = "Scheduled";
-    elseif ($postsdb == "private"):
-        $wp_ps = "Private";
-    else:
-        $wp_ps = "Published";
-    endif;
-    
-    echo $wp_ps;
-}
-
-function write_here_dashboard(){
+    // Get current user info
     global $current_user;
     get_currentuserinfo();
-    
-    $page = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
     $author_total_posts = count_user_posts($current_user->ID);
-
+    
     $get_nop_setting = get_option('write_here_options');
     $post_pp = $get_nop_setting['num_of_posts'];
-    
+   
     $pages = ceil($author_total_posts/$post_pp);
     $offset = ($page * $post_pp) - $post_pp;
     
@@ -60,7 +33,7 @@ function write_here_dashboard(){
         'author' => $current_user->ID
      );
     $author_posts = new WP_Query($author_query);
-    
+
     // Show all posts by current user
     if($author_posts->have_posts()){
         echo '<div class="write-here-dashboard-wrap">';
@@ -96,8 +69,9 @@ function write_here_dashboard(){
                     'end_size'     => 1,
                     'mid_size'     => 3,
                     'prev_next'    => false,
-                    'type'         => 'list');
-                    // ECHO THE PAGENATION 
+                    'type'         => 'list'
+                );
+                // ECHO THE PAGENATION 
                 echo paginate_links( $args );
             echo '</div>';
 
@@ -106,4 +80,7 @@ function write_here_dashboard(){
     }else{
         echo '<p class="write-first-post">Write your first post!</p>';
     }
+    
+    die();
 }
+add_action( 'wp_ajax_write_here_get_posts', 'write_here_ajax_dashboard' );

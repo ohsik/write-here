@@ -15,7 +15,7 @@
     font-size: 16px;
     margin-bottom: 10px;
     width: 100%;
-    padding: 15px;
+    padding: 10px;
     border: 1px solid #ddd;
     margin-bottom: 10px;
     display: inline-block;
@@ -117,9 +117,10 @@
 .wp-editor-container{
     border: 1px solid #ddd !important;
 }
-.wp-editor-container textarea{
+.wp-editor-container textarea,
+#wh_content_ifr{
     border: none;
-    height: 200px;
+    height: 200px !important;
 }
 .quicktags-toolbar input{
     width: auto;
@@ -142,6 +143,7 @@
     border: 1px solid #ddd;
     background: #fff;
 }
+/* AJAX thing */
 #wh_img_preview{
     border: 1px solid #ddd;
     margin: 10px 0;
@@ -164,15 +166,59 @@
     padding: 0px;
     font-size: 80%;
 }
+.ajax-top-btn{
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    margin: 20px 0;
+    color: #fff;
+    background: #5EB34F;
+    cursor: pointer;
+    font-size: 140%;
+}
 #loading_ajax{
-    width: 32px;
-    height: 32px;
+    width: 50px;
+    height: 50px;
     position: fixed;
     top: 50%;
     left: 50%;
-    margin-top: -16px;
-    margin-left: -16px;
+    margin-top: -25px;
+    margin-left: -25px;
     z-index: 9;
     display: none;
+    opacity: 0.9;
+    -moz-opacity: 0.9;
     background: url(../img/load.gif) no-repeat center center;
+}
+.wh-form-on-ajax-page,
+.ajax-top-btn{
+    display: none;
+}
+#write_btn_ajax_bottom{
+    position: fixed;
+    width: 50px !important;
+    height: 50px;
+    padding: 0;
+    right: 10px;
+    bottom: 10px;
+    width: auto;
+    margin: 0;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+}
+.ajax-top-btn .dashicons{
+    font-size: 26px;
+    margin: 0 5px;
+}
+#write_btn_ajax_bottom .dashicons{
+    font-size: 40px;
+    margin: 6px 0 0 -18px;
+}
+.dis-no{
+    display: none !important;
+}
+.author-total-posts{
+    padding: 10px;
+    text-align: center;
 }

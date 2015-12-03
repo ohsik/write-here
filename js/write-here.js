@@ -16,7 +16,7 @@ jQuery(document).ready( function($) {
     /*
     **  Upload featured image AJAX
     */ 
-    $('#wh_image_upload').change(function(){
+    $(document).on('change', '#wh_image_upload', function(){
         var userFile    =   new FormData();  
         var fileInput   =   $( '#wh_image_upload' )[0].files[0];
         //console.log(fileInput);
@@ -51,6 +51,7 @@ jQuery(document).ready( function($) {
             contentType: false,
             error: function(jqXHR, textStatus, errorMessage) {
                 console.log(errorMessage);
+                return false;
             },
             success: function(data) {
                 
@@ -69,7 +70,7 @@ jQuery(document).ready( function($) {
     /*
     **  Remove featured image AJAX
     */
-    $('.prv_del').live('click', function() {
+    $(document).on('click', '.prv_del', function() {
         
         var attID = $('#attachment_id').val();
 
@@ -81,6 +82,10 @@ jQuery(document).ready( function($) {
                 att_ID: attID,
                 post_type: 'attachment',
                 security: ajax_object.ajax_nonce
+            },
+            error: function(jqXHR, textStatus, errorMessage) {
+                console.log(errorMessage);
+                return false;
             },
             success: function() {
                 console.log(attID + ' Removed!');
@@ -119,7 +124,8 @@ jQuery(document).ready( function($) {
                 action: 'write_here_new_post',
                 data: dataString,
                 error: function(jqXHR, textStatus, errorThrown){                                        
-                    console.error('The following error occured: ' + textStatus, errorThrown);                                                  
+                    console.error('The following error occured: ' + textStatus, errorThrown);
+                    return false;
                 },
                 success: function(data) {
                     console.log('Post Added! ' + data);
@@ -156,7 +162,8 @@ jQuery(document).ready( function($) {
                 action: 'write_here_edit_post',
                 data: dataString,
                 error: function(jqXHR, textStatus, errorThrown){                                        
-                    console.error('The following error occured: ' + textStatus, errorThrown);                                                  
+                    console.error('The following error occured: ' + textStatus, errorThrown);
+                    return false;
                 },
                 success: function(data) {                                       
                     console.log('Post Updated! ' + data);

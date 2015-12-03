@@ -14,8 +14,6 @@ http://wordpress.stackexchange.com/questions/15283/i-am-trying-to-create-a-simpl
 1. Better way for AJAX loading gif.
 2. Server side validation needs to be fixed.
 3. Inline images uploaded by `Add Media` button need to update `post_parent` to the newly created post's ID.
-4. Featured image needs image filter. Only jpg, png, gif, and bmp can be upload.
-5. Add nonce on AJAX featured image upload for security.
 
 ###Plans
 *I'm thinking about making this to a single page application(kind of) using AJAX technology. You only have to add one shortcode into your page/post and on that page, you can write, read, edit and delete all of your content.*

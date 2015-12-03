@@ -28,7 +28,7 @@ function write_here_form(){
         ?>
 
         <label for="cat">Category</label>
-        <?php wp_dropdown_categories( 'show_option_none=Category&taxonomy=category&hide_empty=0' ); ?>
+        <?php wp_dropdown_categories( 'show_option_none=Select&taxonomy=category&hide_empty=0' ); ?>
 
         <label for="post_tags">Tags</label>
         <input type="text" id="post_tags" name="post_tags" />
@@ -52,7 +52,6 @@ function write_here_form(){
     http://codex.wordpress.org/Function_Reference/wp_insert_post
 */
 function write_here_add_new_post() {
-    
     //var_dump($_POST);
     if( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) && $_POST['action'] == "write_here_new_post" && wp_verify_nonce( $_POST['new-post-nonce'], 'new-post' )  ) {
 
