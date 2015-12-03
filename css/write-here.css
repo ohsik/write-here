@@ -139,6 +139,9 @@
     padding: 5px 10px;
     background: #ddd;
 }
+.wh-pagenavi ul li a{
+    cursor: pointer;
+}
 .wh-pagenavi ul li .current{
     border: 1px solid #ddd;
     background: #fff;
