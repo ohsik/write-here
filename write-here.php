@@ -44,7 +44,10 @@ add_action( 'wp_writehere_extension_activation', 'write_here_default_options' );
 */
 // register our form css
 function write_here_register_assets() {
-	wp_register_style('write-here', WH_PATH . '/css/write-here.css');
+	wp_register_style( 'write-here', WH_PATH . '/css/write-here.css' );
+	wp_register_style( 'themename-style', get_stylesheet_uri(), array( 'dashicons' ), '1.0', true );
+    wp_register_script( 'validate', WH_PATH . '/js/jquery.validate.min.js', array('jquery'), '1.0.0', true );
+    wp_register_script( 'ajax-script', WH_PATH . '/js/write-here.js', array('jquery'), '1.2', true );
 }
 add_action('init', 'write_here_register_assets');
 
@@ -56,6 +59,9 @@ function write_here_print_assets() {
 		return;
  
 	wp_print_styles('write-here');
+	wp_print_styles('themename-style');
+	wp_print_scripts('validate');
+	wp_print_scripts('ajax-script');
 }
 add_action('wp_footer', 'write_here_print_assets');
 
@@ -66,10 +72,7 @@ if( !function_exists( 'write_here_time' ) || !function_exists( 'write_here_time_
 
 // Load and localize JS for AJAX
 function wh_enqueue() {
-    wp_enqueue_style( 'themename-style', get_stylesheet_uri(), array( 'dashicons' ), '1.0', true );
-    wp_register_script( 'wh-ajax-app', WH_PATH . '/js/write-here-ajax.js', array('jquery'), '1.0.0', true );
-    wp_enqueue_script( 'validate', WH_PATH . '/js/jquery.validate.min.js', array('jquery'), '1.0.0', true );
-    wp_enqueue_script( 'ajax-script', WH_PATH . '/js/write-here.js', array('jquery'), '1.0.0', true );
+    wp_register_script( 'wh-ajax-app', WH_PATH . '/js/write-here-ajax.js', array('jquery'), '1.2', true );
     wp_localize_script( 'ajax-script', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ), 'ajax_nonce' => wp_create_nonce('wh_obj_ajax')) );
 }
 add_action( 'wp_enqueue_scripts', 'wh_enqueue' );
