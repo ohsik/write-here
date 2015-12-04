@@ -54,9 +54,9 @@ function write_here_edit_form(){
                         <?php 
                             $cat = wp_get_post_terms( $post_to_edit->ID, 'category');
                             if($cat){
-                                wp_dropdown_categories( 'show_option_none=Category&taxonomy=category&selected='.$cat[0]->term_id); 
+                                wp_dropdown_categories( 'taxonomy=category&selected='.$cat[0]->term_id); 
                             }else{
-                                wp_dropdown_categories( 'show_option_none=Category&taxonomy=category&hide_empty=0' );
+                                wp_dropdown_categories( 'taxonomy=category&hide_empty=0' );
                             } 
                         ?>
 

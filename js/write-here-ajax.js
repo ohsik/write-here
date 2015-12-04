@@ -83,7 +83,7 @@ jQuery(document).ready( function($) {
     
     // Extra write button
     $(window).scroll(function() {
-        if($(window).scrollTop() > $(document).height()*0.3){
+        if($(window).scrollTop() > $(document).height()*0.1){
             $('#write_btn_ajax_bottom').css('display', 'block');
         }else{
             $('#write_btn_ajax_bottom').css('display', 'none');

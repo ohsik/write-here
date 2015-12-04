@@ -28,7 +28,7 @@ function write_here_form(){
         ?>
 
         <label for="cat">Category</label>
-        <?php wp_dropdown_categories( 'show_option_none=Select&taxonomy=category&hide_empty=0' ); ?>
+        <?php wp_dropdown_categories( 'taxonomy=category&hide_empty=0' ); ?>
 
         <label for="post_tags">Tags</label>
         <input type="text" id="post_tags" name="post_tags" />
