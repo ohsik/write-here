@@ -54,7 +54,6 @@ function write_here_form(){
 function write_here_add_new_post() {
     //var_dump($_POST);
     if( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) && $_POST['action'] == "write_here_new_post" && wp_verify_nonce( $_POST['new-post-nonce'], 'new-post' )  ) {
-
         // Set default date on the post
         $postdate = date('Y-m-d H:i:s');
         // Get values from front end form
@@ -83,7 +82,6 @@ function write_here_add_new_post() {
             $postdate = $wh_year.'-'.$wh_month.'-'.$wh_day.' '.$wh_hour.':'.$wh_min.':'.$wh_sec;
         }
         
-
         // Add the content of the form to $post as an array
         $new_post = array(
             'post_title'    => $title,
@@ -119,7 +117,7 @@ function write_here_add_new_post() {
 
                 // This will redirect you to the newly created post (Using GUID)
                 $post = get_post($post_id);
-                echo $post->guid;
+                echo site_url('/?p=').$post->ID;
                 
                 exit();
             }

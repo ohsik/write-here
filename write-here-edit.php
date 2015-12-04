@@ -167,12 +167,11 @@ function write_here_edit_post() {
                 
                 // This will redirect you to the newly created post (Using GUID)
                 $post = get_post($post_id);
-                echo $post->guid;
-                
+                echo site_url('/?p=').$post->ID;
+
                 exit();
             } 
         }
-        
     }
     die();
 }
