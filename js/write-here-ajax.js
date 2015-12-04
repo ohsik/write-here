@@ -63,7 +63,7 @@ jQuery(document).ready( function($) {
             },
             success: function(data) {
                 $('#write_here_ajax_wrap').html('');
-                $(document).scrollTop();
+                $(document).scrollTop(0);
                 $('#write_here_ajax_wrap').append(data);
                 $('.wh-pagenavi a').removeAttr('href');
             }
@@ -76,7 +76,7 @@ jQuery(document).ready( function($) {
         $('#write_here_ajax_wrap').hide();
         $('.ajax-top-btn').hide();
         $('#write_btn_ajax_bottom').addClass('dis-no');
-        $(document).scrollTop();
+        $(document).scrollTop(0);
         $('#wh-form-on-ajax-page').show();
         $('#list_btn_ajax').show();
     });
