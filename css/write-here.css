@@ -130,6 +130,7 @@
     padding: 0;
     margin: 0;
     list-style: none;
+    text-align: center;
 }
 .wh-pagenavi ul li{
     display: inline-block;
