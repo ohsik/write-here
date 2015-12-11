@@ -3,8 +3,8 @@ Contributors: writegnj
 Donate link: http://www.ohsikpark.com/
 Tags: post, edit, dashboard, frontend, form, content submission, gravity forms, wp user frontend
 Requires at least: 3.0.1
-Tested up to: 4.3.1
-Stable tag: 4.3
+Tested up to: 4.4
+Stable tag: 4.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,13 +25,13 @@ https://github.com/ohsik/Write-Here
 
 1. Upload `write-here` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Place `[write-here]`, `[write-edit]` and `[write-here-dashboard]` or `[write-here-ajax]`in your pages
+3. Place `[write-here]`, `[write-here-edit]` and `[write-here-dashboard]` or `[write-here-ajax]`in your pages
 4. Set options on the setting page.
 
 == Frequently Asked Questions ==
 
 = What are the shortcode? =
-Use `[write-here]`, `[write-edit]` and `[write-here-dashboard]` or `[write-here-ajax]`
+Use `[write-here]`, `[write-here-edit]` and `[write-here-dashboard]` or `[write-here-ajax]`
 
 = Edit link is not working =
 Please set your edit page under Write Here's setting page.
