@@ -1,4 +1,12 @@
 jQuery(document).ready( function($) {
+    
+    // Set post_parent to 0(Unattached) for all images uploaded via Add Media button.
+    // Rather than parent them to the page contains [write-here] or [write-here-edit]
+    jQuery('.write-here #insert-media-button').on('click', function( event ){
+        event.preventDefault();
+        wp.media.model.settings.post.id = 0;
+    });
+    
     /*
     **  Get value from TinyMCE editor 
     */

@@ -4,7 +4,7 @@ Plugin Name: Write Here
 Plugin URI: http://wp.ohsikpark.com/write-here/
 Description: Simple front end form for WordPress. Write Here will allow you to have registered users to write & manage articles from front end.
 Author: writegnj
-Version: 1.2
+Version: 1.3
 Author URI: http://www.ohsikpark.com
 Text Domain: write-here
 License: GPL2

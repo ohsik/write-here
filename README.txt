@@ -47,3 +47,6 @@ Please set your edit page under Write Here's setting page.
 
 = 1.2 =
 * Added [write-here-ajax]
+
+= 1.3 =
+* Attachment parent id set to 0 (unattached)
