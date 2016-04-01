@@ -17,7 +17,7 @@ function write_here_ajax_dashboard() {
     
     // Get current user info
     global $current_user;
-    get_currentuserinfo();
+    wp_get_current_user();
     $author_total_posts = count_user_posts($current_user->ID);
     
     $get_nop_setting = get_option('write_here_options');

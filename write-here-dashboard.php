@@ -42,7 +42,7 @@ function wh_post_status($postsdb){
 
 function write_here_dashboard(){
     global $current_user;
-    get_currentuserinfo();
+    wp_get_current_user();
     
     $page = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
     $author_total_posts = count_user_posts($current_user->ID);

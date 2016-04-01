@@ -3,8 +3,8 @@ Contributors: writegnj
 Donate link: http://www.ohsikpark.com/
 Tags: post, edit, dashboard, frontend, form, content submission, gravity forms, wp user frontend
 Requires at least: 3.0.1
-Tested up to: 4.4
-Stable tag: 4.4
+Tested up to: 4.5
+Stable tag: 4.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,3 +50,6 @@ Please set your edit page under Write Here's setting page.
 
 = 1.3 =
 * Attachment parent id set to 0 (unattached)
+
+= 1.4 =
+* Replaced get_currentuserinfo() with wp_get_current_user() for WordPress 4.5
